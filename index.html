@@ -21,8 +21,8 @@
 
 body {
   margin: 0;
-  padding: 0 15px 125px;
-  min-height: 100vh;
+  padding: 0 15px 82px;
+  min-height: 100svh;
   font-family: -apple-system, BlinkMacSystemFont,
     "Hiragino Kaku Gothic ProN", sans-serif;
   color: var(--text);
@@ -100,7 +100,37 @@ header {
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: 48px 5px 18px;
+  padding: 35px 5px 8px;
+}
+
+.crown {
+  font-size: 34px;
+  line-height: 1;
+  filter: drop-shadow(0 4px 3px #d99c4266);
+}
+
+header h1 {
+  font-size: clamp(29px, 7vw, 37px);
+  font-weight: 900;
+  letter-spacing: -1px;
+  margin: 2px 0 6px;
+  color: #ed83b2;
+  text-shadow:
+    0 3px 0 #fff,
+    0 5px 5px #c76e9a66;
+}
+
+.subtitle {
+  display: inline-block;
+  padding: 6px 18px;
+  border-radius: 30px;
+  background: linear-gradient(180deg, #fffaff, #f7c9df);
+  border: 2px solid #f9d9e9;
+  box-shadow: 0 5px 8px #c982a344,
+              inset 0 3px 5px #ffffff;
+  font-size: 13px;
+  font-weight: bold;
+  color: #a85e83;
 }
 
 .crown {
@@ -138,18 +168,18 @@ header h1 {
 .stats {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 13px;
-  margin: 7px 0 25px;
+  gap: 10px;
+  margin: 5px 0 10px;
 }
 
 .stat {
-  min-height: 125px;
-  border-radius: 27px;
+  min-height: 78px;
+  border-radius: 23px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 13px 8px;
+  gap: 6px;
+  padding: 7px 5px;
   box-shadow:
     0 8px 12px #b77e9940,
     inset 0 4px 7px #ffffffcc,
@@ -197,28 +227,27 @@ header h1 {
 .section-title {
   text-align: center;
   color: #bd7896;
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 900;
-  margin: 20px 0 14px;
+  margin: 7px 0 7px;
 }
 
 .menu-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 13px;
+  gap: 8px;
 }
-
 .menu-button {
   min-width: 0;
-  min-height: 145px;
-  padding: 13px 4px 12px;
+  min-height: 91px;
+  padding: 6px 3px;
   border: 2px solid #ffffffb8;
-  border-radius: 27px;
+  border-radius: 21px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 7px;
+  gap: 3px;
   color: #956879;
   font-family: inherit;
   font-size: 14px;
@@ -236,9 +265,9 @@ header h1 {
 }
 
 .menu-icon {
-  font-size: 47px;
-  line-height: 1.2;
-  filter: drop-shadow(0 5px 4px #98718b44);
+  font-size: 34px;
+  line-height: 1.1;
+  filter: drop-shadow(0 4px 3px #98718b44);
 }
 
 .menu-button span:last-child {
@@ -272,9 +301,9 @@ header h1 {
 /* 最近の登録 */
 
 .recent {
-  margin: 35px 0 25px;
+  margin: 12px 0 8px;
   position: relative;
-  padding-top: 17px;
+  padding-top: 10px;
 }
 
 .recent-title {
@@ -283,20 +312,20 @@ header h1 {
   width: 72%;
   margin: auto;
   text-align: center;
-  padding: 11px 8px;
-  border-radius: 30px;
+  padding: 7px 8px;
+  border-radius: 25px;
   background: linear-gradient(180deg, #fff, #f9d8e8);
   border: 2px solid #ffffff;
-  box-shadow: 0 5px 9px #bd819a44;
-  font-size: 20px;
+  box-shadow: 0 4px 7px #bd819a44;
+  font-size: 16px;
   font-weight: 900;
   color: #b96f91;
 }
 
 .recent-content {
-  min-height: 155px;
-  margin-top: -8px;
-  border-radius: 32px;
+  min-height: 65px;
+  margin-top: -6px;
+  border-radius: 25px;
   border: 2px solid #ffffff;
   background: linear-gradient(145deg, #fffdfd, #fff0f5);
   box-shadow:
@@ -305,7 +334,7 @@ header h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 25px 15px;
+  padding: 12px 10px;
   text-align: center;
 }
 
@@ -320,13 +349,13 @@ header h1 {
 .bottom-nav {
   position: fixed;
   z-index: 10;
-  bottom: 10px;
+  bottom: 6px;
   left: 10px;
   right: 10px;
   max-width: 520px;
   margin: auto;
-  height: 92px;
-  border-radius: 32px;
+  height: 65px;
+  border-radius: 25px;
   border: 2px solid #ffffff;
   background: linear-gradient(145deg, #fff9fc, #f7d4e7);
   box-shadow:
@@ -356,7 +385,7 @@ header h1 {
 }
 
 .nav-icon {
-  font-size: 31px;
+  font-size: 25px;
   filter: drop-shadow(0 3px 3px #ba779644);
 }
 
@@ -367,26 +396,30 @@ footer {
   margin: 20px 0;
 }
 
-@media (max-width: 360px) {
+@media (max-width: 390px) {
   body {
     padding-left: 10px;
     padding-right: 10px;
   }
 
   .menu-grid {
-    gap: 8px;
+    gap: 7px;
   }
 
   .menu-button {
-    min-height: 125px;
+    min-height: 85px;
     font-size: 12px;
   }
 
   .menu-icon {
-    font-size: 39px;
+    font-size: 30px;
   }
 
   .stat-icon {
+    font-size: 30px;
+  }
+
+  .stat-number {
     font-size: 32px;
   }
 }
