@@ -694,6 +694,18 @@ footer {
   color: #d46b91;
   font-size: 13px;
 }
+#logoutButton {
+  display: block;
+  margin: 15px auto;
+  padding: 9px 18px;
+  border: 1px solid #f4c9dc;
+  border-radius: 20px;
+  background: #fff;
+  color: #c77d9e;
+  font-size: 13px;
+  position: relative;
+  z-index: 9999;
+}
 </style>
 </head>
 
@@ -732,6 +744,11 @@ footer {
 </div>
 
 <div id="homeScreen" style="display:none;">
+
+  <button id="logoutButton" type="button">
+    💗 ログアウト
+  </button>
+
   <div class="cloud-frill"></div>
 
   <div class="decoration ribbon">🎀</div>
@@ -1099,32 +1116,20 @@ loginButton.addEventListener('click', async () => {
     loginButton.textContent = '💗 ログイン';
   }
 });
-// ログアウトボタンを作成
-const logoutButton = document.createElement('button');
-logoutButton.textContent = 'ログアウト';
-logoutButton.type = 'button';
+// ログアウトボタン
+const logoutButton = document.getElementById('logoutButton');
 
-logoutButton.style.display = 'block';
-logoutButton.style.margin = '15px auto';
-logoutButton.style.padding = '9px 18px';
-logoutButton.style.border = '1px solid #f4c9dc';
-logoutButton.style.borderRadius = '20px';
-logoutButton.style.background = '#fff';
-logoutButton.style.color = '#c77d9e';
-logoutButton.style.fontSize = '13px';
-
-// ホーム画面に追加
-homeScreen.prepend(logoutButton);
-logoutButton.style.position = 'relative';
-logoutButton.style.zIndex = '9999';
-
-// ログアウト処理
 logoutButton.addEventListener('click', async () => {
   const confirmed = confirm('ログアウトしますか？');
 
   if (!confirmed) return;
 
-  await signOut(auth);
+  try {
+    await signOut(auth);
+  } catch (error) {
+    console.error(error);
+    alert('ログアウトできませんでした。もう一度お試しください。');
+  }
 });
 const newRegisterButton = document.getElementById('newRegisterButton');
 const backHomeButton = document.getElementById('backHomeButton');
