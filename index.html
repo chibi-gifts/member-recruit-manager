@@ -423,6 +423,93 @@ footer {
     font-size: 32px;
   }
 }
+/* 新規登録画面 */
+#registerScreen {
+  padding: 15px 5px 100px;
+}
+
+#registerScreen h2 {
+  color: #d979a5;
+  text-align: center;
+  font-size: 23px;
+  margin: 22px 0 8px;
+}
+
+#registerScreen p {
+  color: #a77b91;
+  text-align: center;
+  font-size: 13px;
+  margin-bottom: 25px;
+}
+
+#backHomeButton {
+  background: #fff;
+  color: #d979a5;
+  border: 2px solid #f5c5da;
+  border-radius: 20px;
+  padding: 10px 17px;
+  font-size: 13px;
+  font-weight: bold;
+  box-shadow: 0 3px 7px #e9b9cd;
+}
+
+.form-group {
+  background: #fff9fc;
+  border: 2px solid #f7d5e4;
+  border-radius: 20px;
+  padding: 14px;
+  margin: 13px 0;
+  box-shadow: 0 4px 9px #f3dce7;
+}
+
+.form-group label {
+  display: block;
+  color: #b96f91;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 9px;
+}
+
+.form-group input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid #f4d5e2;
+  border-radius: 13px;
+  background: #fff;
+  padding: 12px;
+  font-size: 16px;
+  color: #775568;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: #e9a8c5;
+  box-shadow: 0 0 0 3px #fce8f1;
+}
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid #f4d5e2;
+  border-radius: 13px;
+  background: #fff;
+  padding: 12px;
+  font-size: 15px;
+  color: #775568;
+  outline: none;
+  font-family: inherit;
+}
+
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #e9a8c5;
+  box-shadow: 0 0 0 3px #fce8f1;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 90px;
+}
 </style>
 </head>
 
@@ -523,7 +610,7 @@ footer {
     Member Room ♡
   </footer>
 </div>
-  <section id="registerScreen" style="display:none;">
+<section id="registerScreen" style="display:none;">
 
   <button id="backHomeButton" type="button">
     ♡ ホームに戻る
@@ -532,6 +619,103 @@ footer {
   <h2>💗 新規登録 💗</h2>
   <p>新しいメンバーの情報を登録します♡</p>
 
+  <div class="form-group">
+    <label for="contactDate">📅 声かけ日 *</label>
+    <input
+      type="date"
+      id="contactDate"
+      required
+    >
+  </div>
+
+  <div class="form-group">
+    <label for="xAccount">𝕏 Xアカウント</label>
+    <input
+      type="text"
+      id="xAccount"
+      placeholder="例：@xxxxx"
+    >
+  </div>
+
+  <div class="form-group">
+    <label for="memberName">💗 お名前 *</label>
+    <input
+      type="text"
+      id="memberName"
+      placeholder="お名前を入力してください"
+      required
+    >
+  </div>
+  <div class="form-group">
+    <label for="activityStatus">🌷 現在の活動状況</label>
+    <select id="activityStatus">
+      <option value="">選択してください</option>
+      <option value="個人で売り">個人で売り</option>
+      <option value="個人でイベント参加">個人でイベント参加</option>
+      <option value="他チーム所属">他チーム所属</option>
+      <option value="未経験">未経験</option>
+      <option value="その他・不明">その他・不明</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="accountCount">🎀 持ち垢数</label>
+    <input
+      type="number"
+      id="accountCount"
+      min="0"
+      step="1"
+      placeholder="例：5"
+    >
+  </div>
+
+  <div class="form-group">
+    <label for="linkAccountCount">💗 リンク対応垢数</label>
+    <input
+      type="number"
+      id="linkAccountCount"
+      min="0"
+      step="1"
+      placeholder="例：3"
+    >
+  </div>
+  <div class="form-group">
+    <label for="participationStatus">💌 参加状況</label>
+    <select id="participationStatus">
+      <option value="">選択してください</option>
+      <option value="返事待ち">返事待ち</option>
+      <option value="検討中">検討中</option>
+      <option value="前向き">前向き</option>
+      <option value="参加確定">参加確定</option>
+      <option value="辞退">辞退</option>
+      <option value="不明">不明</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="lastContactDate">📅 最終連絡日</label>
+    <input
+      type="date"
+      id="lastContactDate"
+    >
+  </div>
+
+  <div class="form-group">
+    <label for="nextContactDate">🌸 次回声かけ予定日</label>
+    <input
+      type="date"
+      id="nextContactDate"
+    >
+  </div>
+
+  <div class="form-group">
+    <label for="memberMemo">📝 メモ・備考</label>
+    <textarea
+      id="memberMemo"
+      rows="4"
+      placeholder="気になることや連絡内容などを入力できます♡"
+    ></textarea>
+  </div>
 </section>
   
 </div>
@@ -561,7 +745,45 @@ const homeScreen = document.getElementById('homeScreen');
 const registerScreen = document.getElementById('registerScreen');
 const newRegisterButton = document.getElementById('newRegisterButton');
 const backHomeButton = document.getElementById('backHomeButton');
-const bottomNav = document.querySelector('.bottom-nav');
+// 声かけ日を最終連絡日に自動入力
+const contactDate = document.getElementById('contactDate');
+const lastContactDate = document.getElementById('lastContactDate');
+
+contactDate.addEventListener('change', () => {
+  if (lastContactDate.value === '') {
+    lastContactDate.value = contactDate.value;
+  }
+});
+// 持ち垢数とリンク対応垢数の入力チェック
+const accountCount = document.getElementById('accountCount');
+const linkAccountCount = document.getElementById('linkAccountCount');
+
+function checkAccountCount() {
+  const total = accountCount.value;
+  const link = linkAccountCount.value;
+
+  linkAccountCount.setCustomValidity('');
+
+  if (link === '') return;
+
+  if (total === '') {
+    linkAccountCount.setCustomValidity(
+      '先に持ち垢数を入力してください♡'
+    );
+  } else if (Number(link) > Number(total)) {
+    linkAccountCount.setCustomValidity(
+      'リンク対応垢数は持ち垢数以下にしてください♡'
+    );
+  }
+
+  if (!linkAccountCount.validity.valid) {
+    linkAccountCount.reportValidity();
+  }
+}
+
+accountCount.addEventListener('input', checkAccountCount);
+linkAccountCount.addEventListener('input', checkAccountCount);
+  const bottomNav = document.querySelector('.bottom-nav');
 
 // 新規登録画面を開く
 newRegisterButton.addEventListener('click', () => {
