@@ -522,6 +522,66 @@ footer {
   resize: vertical;
   min-height: 90px;
 }
+/* 入力内容の確認画面 */
+#confirmScreen {
+  padding: 15px 5px 100px;
+}
+
+#confirmScreen h2 {
+  color: #d979a5;
+  text-align: center;
+  font-size: 23px;
+  margin: 22px 0 8px;
+}
+
+#confirmScreen p {
+  color: #a77b91;
+  text-align: center;
+  font-size: 13px;
+  margin-bottom: 25px;
+}
+
+/* 確認画面の戻るボタン */
+#backRegisterButton,
+#editRegisterButton {
+  background: #fff;
+  color: #d979a5;
+  border: 2px solid #f5c5da;
+  border-radius: 20px;
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: 0 3px 7px #e9b9cd;
+}
+
+/* 登録確定ボタン */
+#submitRegisterButton {
+  display: block;
+  width: 100%;
+  margin-top: 18px;
+  padding: 16px 10px;
+  background: linear-gradient(135deg, #f6b8d2, #e995bb);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 4px 9px #e9b9cd;
+}
+/* 確認画面へ進むボタン */
+#goConfirmButton {
+  display: block;
+  width: 100%;
+  margin: 22px 0;
+  padding: 16px 10px;
+  background: linear-gradient(135deg, #f6b8d2, #e995bb);
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 4px 9px #e9b9cd;
+}
 </style>
 </head>
 
@@ -728,8 +788,34 @@ footer {
       placeholder="気になることや連絡内容などを入力できます♡"
     ></textarea>
   </div>
+  <button id="goConfirmButton" type="button">
+    💗 入力内容を確認する
+  </button>
 </section>
-  
+  <!-- 入力内容の確認画面 -->
+<section id="confirmScreen" style="display:none;">
+
+  <button id="backRegisterButton" type="button">
+    ♡ 入力画面に戻る
+  </button>
+
+  <h2>💗 登録内容の確認 💗</h2>
+
+  <p>入力した内容に間違いがないか確認してください♡</p>
+
+  <div id="confirmContent">
+    <!-- 入力内容をここに表示します -->
+  </div>
+
+  <button id="editRegisterButton" type="button">
+    ♡ 修正する
+  </button>
+
+  <button id="submitRegisterButton" type="button">
+    💗 この内容で登録する
+  </button>
+
+</section>
 </div>
 
 <!-- 下部ナビゲーション -->
@@ -757,6 +843,61 @@ const homeScreen = document.getElementById('homeScreen');
 const registerScreen = document.getElementById('registerScreen');
 const newRegisterButton = document.getElementById('newRegisterButton');
 const backHomeButton = document.getElementById('backHomeButton');
+// 確認画面の要素
+const confirmScreen = document.getElementById('confirmScreen');
+const backRegisterButton = document.getElementById('backRegisterButton');
+const editRegisterButton = document.getElementById('editRegisterButton');
+const submitRegisterButton = document.getElementById('submitRegisterButton');
+const confirmContent = document.getElementById('confirmContent');
+
+// 入力画面の要素
+const registerInputs = {
+  contactDate: document.getElementById('contactDate'),
+  xAccount: document.getElementById('xAccount'),
+  memberName: document.getElementById('memberName'),
+  activityStatus: document.getElementById('activityStatus'),
+  accountCount: document.getElementById('accountCount'),
+  linkAccountCount: document.getElementById('linkAccountCount'),
+  participationStatus: document.getElementById('participationStatus'),
+  lastContactDate: document.getElementById('lastContactDate'),
+  nextContactDate: document.getElementById('nextContactDate'),
+  memberMemo: document.getElementById('memberMemo')
+};
+  // 確認画面に入力内容を表示する
+function showConfirmContent() {
+
+  const labels = {
+    contactDate: '📅 声かけ日',
+    xAccount: '𝕏 Xアカウント',
+    memberName: '💗 お名前',
+    activityStatus: '🌷 現在の活動状況',
+    accountCount: '🎀 持ち垢数',
+    linkAccountCount: '💗 リンク対応垢数',
+    participationStatus: '💌 参加状況',
+    lastContactDate: '📅 最終連絡日',
+    nextContactDate: '🌸 次回声かけ予定日',
+    memberMemo: '📝 メモ・備考'
+  };
+
+  confirmContent.replaceChildren();
+
+  Object.keys(registerInputs).forEach(key => {
+
+    const item = document.createElement('div');
+    item.className = 'confirm-item';
+
+    const label = document.createElement('strong');
+    label.textContent = labels[key];
+
+    const value = document.createElement('p');
+    value.textContent = registerInputs[key].value.trim() || '未入力';
+
+    item.appendChild(label);
+    item.appendChild(value);
+
+    confirmContent.appendChild(item);
+  });
+}
 // 声かけ日を最終連絡日に自動入力
 const contactDate = document.getElementById('contactDate');
 const lastContactDate = document.getElementById('lastContactDate');
