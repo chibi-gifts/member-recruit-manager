@@ -625,12 +625,112 @@ footer {
   font-weight: bold;
   box-shadow: 0 4px 9px #e9b9cd;
 }
+/* ログイン画面 */
+#loginScreen {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px 15px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 360px;
+  padding: 35px 25px;
+  background: linear-gradient(145deg, #fffafd, #fff0f6);
+  border: 2px solid #ffe0ed;
+  border-radius: 28px;
+  box-shadow: 0 8px 20px rgba(230, 150, 180, 0.15);
+  text-align: center;
+}
+
+.login-crown {
+  font-size: 42px;
+  margin-bottom: 8px;
+}
+
+.login-card h2 {
+  color: #d77da3;
+  font-size: 25px;
+  margin: 5px 0 10px;
+}
+
+.login-card p {
+  color: #b9879d;
+  font-size: 14px;
+  margin-bottom: 22px;
+}
+
+.login-card input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px;
+  margin-bottom: 14px;
+  border: 1px solid #f4c9dc;
+  border-radius: 15px;
+  background: #ffffff;
+  font-size: 15px;
+  outline: none;
+}
+
+.login-card button {
+  width: 100%;
+  padding: 16px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #f5a9ca, #e98bb5);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 5px 12px rgba(220, 130, 170, 0.2);
+}
+
+#loginMessage {
+  margin-top: 15px;
+  margin-bottom: 0;
+  color: #d46b91;
+  font-size: 13px;
+}
 </style>
 </head>
 
 <body>
 
 <div class="container">
+
+<div id="loginScreen">
+
+  <div class="login-card">
+    <div class="login-crown">👑</div>
+    <h2>Member Room ♡</h2>
+    <p>ログインしてください♡</p>
+
+    <input
+      type="email"
+      id="loginEmail"
+      placeholder="メールアドレス"
+      autocomplete="username"
+    >
+
+    <input
+      type="password"
+      id="loginPassword"
+      placeholder="パスワード"
+      autocomplete="current-password"
+    >
+
+    <button id="loginButton" type="button">
+      💗 ログイン
+    </button>
+
+    <p id="loginMessage"></p>
+  </div>
+
+</div>
+
 <div id="homeScreen">
   <div class="cloud-frill"></div>
 
@@ -882,6 +982,146 @@ footer {
 
 </nav>
 <script type="module">
+
+// Firebase SDKを読み込む
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
+import {
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
+// Firebaseの接続設定
+const firebaseConfig = {
+  apiKey: "AIzaSyCyoFlwJxJeZaphLEyMV-VBImqE6nlsJfg",
+  authDomain: "member-room.firebaseapp.com",
+  projectId: "member-room",
+  storageBucket: "member-room.firebasestorage.app",
+  messagingSenderId: "220941237317",
+  appId: "1:220941237317:web:f7076f563d357d3599372c"
+};
+
+// Firebaseを初期化
+const app = initializeApp(firebaseConfig);
+
+// 認証とデータベースを準備
+const auth = getAuth(app);
+const db = getFirestore(app);
+// ログイン画面・アプリ画面の切り替え
+const loginScreen = document.getElementById('loginScreen');
+const homeScreen = document.getElementById('homeScreen');
+const registerScreen = document.getElementById('registerScreen');
+const confirmScreen = document.getElementById('confirmScreen');
+const bottomNav = document.querySelector('.bottom-nav');
+
+const loginButton = document.getElementById('loginButton');
+const loginEmail = document.getElementById('loginEmail');
+const loginPassword = document.getElementById('loginPassword');
+const loginMessage = document.getElementById('loginMessage');
+
+// 画面をログイン状態に合わせて切り替える
+function showLoginScreen() {
+  loginScreen.style.display = 'flex';
+  homeScreen.style.display = 'none';
+  registerScreen.style.display = 'none';
+  confirmScreen.style.display = 'none';
+  if (bottomNav) bottomNav.style.display = 'none';
+}
+
+function showAppScreen() {
+  loginScreen.style.display = 'none';
+  homeScreen.style.display = 'block';
+  if (bottomNav) bottomNav.style.display = 'flex';
+}
+
+// ログイン状態とユーザー権限を確認
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    showLoginScreen();
+    return;
+  }
+
+  try {
+    const roleDoc = await getDoc(doc(db, 'roles', user.uid));
+
+    if (!roleDoc.exists()) {
+      await signOut(auth);
+      loginMessage.textContent = 'このアカウントは登録されていません。';
+      showLoginScreen();
+      return;
+    }
+
+    const role = roleDoc.data().role;
+
+    if (role !== 'admin' && role !== 'captain') {
+      await signOut(auth);
+      loginMessage.textContent = 'ログイン権限がありません。';
+      showLoginScreen();
+      return;
+    }
+
+    showAppScreen();
+
+  } catch (error) {
+    console.error(error);
+    await signOut(auth);
+    loginMessage.textContent = '権限の確認に失敗しました。';
+    showLoginScreen();
+  }
+});
+// ログインボタンを押したとき
+loginButton.addEventListener('click', async () => {
+  const email = loginEmail.value.trim();
+  const password = loginPassword.value;
+
+  loginMessage.textContent = '';
+
+  if (!email || !password) {
+    loginMessage.textContent = 'メールアドレスとパスワードを入力してください♡';
+    return;
+  }
+
+  loginButton.disabled = true;
+  loginButton.textContent = 'ログイン中...';
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    console.error(error);
+    loginMessage.textContent =
+      'ログインできませんでした。入力内容を確認してください。';
+  } finally {
+    loginButton.disabled = false;
+    loginButton.textContent = '💗 ログイン';
+  }
+});
+// ログアウトボタンを作成
+const logoutButton = document.createElement('button');
+logoutButton.textContent = 'ログアウト';
+logoutButton.type = 'button';
+
+logoutButton.style.display = 'block';
+logoutButton.style.margin = '15px auto';
+logoutButton.style.padding = '9px 18px';
+logoutButton.style.border = '1px solid #f4c9dc';
+logoutButton.style.borderRadius = '20px';
+logoutButton.style.background = '#fff';
+logoutButton.style.color = '#c77d9e';
+logoutButton.style.fontSize = '13px';
+
+// ホーム画面に追加
+homeScreen.prepend(logoutButton);
+
+// ログアウト処理
+logoutButton.addEventListener('click', async () => {
+  const confirmed = confirm('ログアウトしますか？');
+
+  if (!confirmed) return;
+
+  await signOut(auth);
+});
 const homeScreen = document.getElementById('homeScreen');
 const registerScreen = document.getElementById('registerScreen');
 const newRegisterButton = document.getElementById('newRegisterButton');
