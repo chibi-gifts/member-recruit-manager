@@ -1115,6 +1115,8 @@ logoutButton.style.fontSize = '13px';
 
 // ホーム画面に追加
 homeScreen.prepend(logoutButton);
+logoutButton.style.position = 'relative';
+logoutButton.style.zIndex = '9999';
 
 // ログアウト処理
 logoutButton.addEventListener('click', async () => {
