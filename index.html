@@ -429,7 +429,7 @@ footer {
 <body>
 
 <div class="container">
-
+<div id="homeScreen">
   <div class="cloud-frill"></div>
 
   <div class="decoration ribbon">🎀</div>
@@ -476,7 +476,7 @@ footer {
       <span>検索</span>
     </button>
 
-    <button class="menu-button menu-green" type="button">
+    <button id="newRegisterButton" class="menu-button menu-green" type="button">
       <span class="menu-icon">📅</span>
       <span>新規登録</span>
     </button>
@@ -522,7 +522,18 @@ footer {
   <footer>
     Member Room ♡
   </footer>
+</div>
+  <section id="registerScreen" style="display:none;">
 
+  <button id="backHomeButton" type="button">
+    ♡ ホームに戻る
+  </button>
+
+  <h2>💗 新規登録 💗</h2>
+  <p>新しいメンバーの情報を登録します♡</p>
+
+</section>
+  
 </div>
 
 <!-- 下部ナビゲーション -->
@@ -545,6 +556,28 @@ footer {
   </button>
 
 </nav>
+<script>
+const homeScreen = document.getElementById('homeScreen');
+const registerScreen = document.getElementById('registerScreen');
+const newRegisterButton = document.getElementById('newRegisterButton');
+const backHomeButton = document.getElementById('backHomeButton');
+const bottomNav = document.querySelector('.bottom-nav');
 
+// 新規登録画面を開く
+newRegisterButton.addEventListener('click', () => {
+  homeScreen.style.display = 'none';
+  registerScreen.style.display = 'block';
+  bottomNav.style.display = 'none';
+  window.scrollTo(0, 0);
+});
+
+// ホーム画面に戻る
+backHomeButton.addEventListener('click', () => {
+  registerScreen.style.display = 'none';
+  homeScreen.style.display = 'block';
+  bottomNav.style.display = 'grid';
+  window.scrollTo(0, 0);
+});
+</script>
 </body>
 </html>
