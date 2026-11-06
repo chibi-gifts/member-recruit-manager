@@ -1122,12 +1122,9 @@ logoutButton.addEventListener('click', async () => {
 
   await signOut(auth);
 });
-const homeScreen = document.getElementById('homeScreen');
-const registerScreen = document.getElementById('registerScreen');
 const newRegisterButton = document.getElementById('newRegisterButton');
 const backHomeButton = document.getElementById('backHomeButton');
 // 確認画面の要素
-const confirmScreen = document.getElementById('confirmScreen');
 const backRegisterButton = document.getElementById('backRegisterButton');
 const editRegisterButton = document.getElementById('editRegisterButton');
 const submitRegisterButton = document.getElementById('submitRegisterButton');
@@ -1284,8 +1281,6 @@ function checkAccountCount() {
 
 accountCount.addEventListener('input', checkAccountCount);
 linkAccountCount.addEventListener('input', checkAccountCount);
-  const bottomNav = document.querySelector('.bottom-nav');
-
 // 新規登録画面を開く
 newRegisterButton.addEventListener('click', () => {
   homeScreen.style.display = 'none';
