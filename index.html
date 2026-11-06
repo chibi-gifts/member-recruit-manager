@@ -593,6 +593,24 @@ footer {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+/* 確認画面を2列にする */
+#confirmContent {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+/* 確認カードの余白調整 */
+#confirmContent .confirm-item {
+  margin: 0;
+  padding: 12px 10px;
+  min-width: 0;
+}
+
+/* メモ・備考だけ横幅いっぱい */
+#confirmContent .confirm-item:last-child {
+  grid-column: 1 / -1;
+}
 /* 確認画面へ進むボタン */
 #goConfirmButton {
   display: block;
