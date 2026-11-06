@@ -4,157 +4,514 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#fff1f6">
-<title>メンバー募集管理 ♡</title>
+<meta name="theme-color" content="#fff0f6">
+<title>Member Room ♡</title>
 
 <style>
 * {
   box-sizing: border-box;
 }
 
+:root {
+  --pink: #ef9fc5;
+  --dark-pink: #b96d91;
+  --cream: #fff7f5;
+  --text: #966d7d;
+}
+
 body {
   margin: 0;
-  padding: 20px 16px 40px;
-  background: linear-gradient(160deg, #fff5f8, #fffafd);
-  color: #66515b;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  padding: 0 15px 125px;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont,
+    "Hiragino Kaku Gothic ProN", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at 50% 20%, #fffdfb, transparent 65%),
+    linear-gradient(145deg, #ffe5f0, #fff6f4 55%, #fceafa);
+  overflow-x: hidden;
 }
 
 .container {
+  width: 100%;
   max-width: 520px;
   margin: auto;
+  position: relative;
 }
 
+/* 上部の雲形フリル */
+
+.cloud-frill {
+  position: absolute;
+  top: 0;
+  left: -25px;
+  right: -25px;
+  height: 55px;
+  background:
+    radial-gradient(ellipse 45px 35px at 45px 0, #f9c8df 95%, transparent),
+    radial-gradient(ellipse 55px 42px at 125px 0, #f9c8df 95%, transparent),
+    radial-gradient(ellipse 55px 42px at 220px 0, #f9c8df 95%, transparent),
+    radial-gradient(ellipse 55px 42px at 320px 0, #f9c8df 95%, transparent),
+    radial-gradient(ellipse 55px 42px at 420px 0, #f9c8df 95%, transparent);
+  background-size: 520px 65px;
+  background-color: #f9c8df;
+  border-radius: 0 0 45% 45%;
+  box-shadow: 0 5px 12px #d98eae55;
+  z-index: 0;
+}
+
+/* 飾り */
+
+.decoration {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 5px 5px #d68eaa55);
+}
+
+.ribbon {
+  top: 23px;
+  left: 2px;
+  font-size: 65px;
+  transform: rotate(-12deg);
+}
+
+.heart-one {
+  top: 85px;
+  right: 0;
+  font-size: 35px;
+}
+
+.heart-two {
+  top: 165px;
+  left: -7px;
+  font-size: 28px;
+}
+
+.heart-three {
+  top: 190px;
+  right: 8px;
+  font-size: 28px;
+}
+
+/* タイトル */
+
 header {
+  position: relative;
+  z-index: 2;
   text-align: center;
-  padding: 24px 10px;
+  padding: 48px 5px 18px;
+}
+
+.crown {
+  font-size: 43px;
+  line-height: 1;
+  filter: drop-shadow(0 4px 3px #d99c4266);
 }
 
 header h1 {
-  color: #c47796;
-  font-size: 25px;
-  margin: 0 0 8px;
+  font-size: clamp(32px, 8vw, 43px);
+  font-weight: 900;
+  letter-spacing: -1px;
+  margin: 2px 0 9px;
+  color: #ed83b2;
+  text-shadow:
+    0 3px 0 #fff,
+    0 5px 5px #c76e9a66;
 }
 
-header p {
-  font-size: 13px;
-  color: #a88b98;
+.subtitle {
+  display: inline-block;
+  padding: 8px 24px;
+  border-radius: 30px;
+  background: linear-gradient(180deg, #fffaff, #f7c9df);
+  border: 2px solid #f9d9e9;
+  box-shadow: 0 5px 8px #c982a344,
+              inset 0 3px 5px #ffffff;
+  font-size: 15px;
+  font-weight: bold;
+  color: #a85e83;
 }
 
-.card {
-  background: #ffffff;
-  border: 1px solid #f5dce6;
-  border-radius: 20px;
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 14px rgba(190, 130, 155, 0.08);
-}
-
-.card h2 {
-  color: #bd7895;
-  font-size: 17px;
-  margin: 0 0 16px;
-}
+/* 人数表示 */
 
 .stats {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 13px;
+  margin: 7px 0 25px;
 }
 
 .stat {
-  background: #fff2f6;
-  border-radius: 16px;
-  padding: 17px 10px;
-  text-align: center;
+  min-height: 125px;
+  border-radius: 27px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 8px;
+  box-shadow:
+    0 8px 12px #b77e9940,
+    inset 0 4px 7px #ffffffcc,
+    inset 0 -5px 8px #0000000c;
+  border: 2px solid #ffffffa8;
 }
 
-.stat-label {
-  font-size: 12px;
-  color: #a77e90;
+.stat.green {
+  background: linear-gradient(145deg, #d6fff0, #8de5c2);
+}
+
+.stat.pink {
+  background: linear-gradient(145deg, #ffe1ed, #f5a9c5);
+}
+
+.stat-icon {
+  font-size: 42px;
+  filter: drop-shadow(0 4px 3px #9a718044);
+}
+
+.stat-info {
+  text-align: center;
 }
 
 .stat-number {
-  font-size: 27px;
+  font-size: 39px;
+  line-height: 1.1;
+  font-weight: 900;
+  color: #299d7c;
+  text-shadow: 0 2px #ffffffaa;
+}
+
+.pink .stat-number {
+  color: #d875a0;
+}
+
+.stat-label {
+  font-size: 13px;
   font-weight: bold;
-  color: #c47796;
-  margin-top: 5px;
+  margin-top: 6px;
+}
+
+/* メニュー */
+
+.section-title {
+  text-align: center;
+  color: #bd7896;
+  font-size: 18px;
+  font-weight: 900;
+  margin: 20px 0 14px;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 13px;
 }
 
 .menu-button {
-  width: 100%;
-  padding: 15px;
-  margin: 6px 0;
-  border: none;
-  border-radius: 14px;
-  background: #fce8ef;
-  color: #a95f7e;
-  font-size: 15px;
-  font-weight: bold;
-  text-align: left;
+  min-width: 0;
+  min-height: 145px;
+  padding: 13px 4px 12px;
+  border: 2px solid #ffffffb8;
+  border-radius: 27px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: #956879;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 900;
+  box-shadow:
+    0 8px 12px #b77e9935,
+    inset 0 5px 8px #ffffffc9,
+    inset 0 -5px 8px #0000000c;
+  cursor: pointer;
+  transition: transform .15s;
 }
 
-.menu-button.primary {
-  background: #d991ad;
-  color: white;
+.menu-button:active {
+  transform: scale(.96);
+}
+
+.menu-icon {
+  font-size: 47px;
+  line-height: 1.2;
+  filter: drop-shadow(0 5px 4px #98718b44);
+}
+
+.menu-button span:last-child {
+  white-space: nowrap;
+}
+
+.menu-pink {
+  background: linear-gradient(145deg, #ffd8ee, #f29acb);
+}
+
+.menu-green {
+  background: linear-gradient(145deg, #dcfff0, #9be9c8);
+}
+
+.menu-yellow {
+  background: linear-gradient(145deg, #fff3bd, #ffd96f);
+}
+
+.menu-blue {
+  background: linear-gradient(145deg, #d9f2ff, #a0d7f7);
+}
+
+.menu-purple {
+  background: linear-gradient(145deg, #f0e2ff, #c9a9ef);
+}
+
+.menu-orange {
+  background: linear-gradient(145deg, #ffe0c9, #ffb58e);
+}
+
+/* 最近の登録 */
+
+.recent {
+  margin: 35px 0 25px;
+  position: relative;
+  padding-top: 17px;
+}
+
+.recent-title {
+  position: relative;
+  z-index: 1;
+  width: 72%;
+  margin: auto;
   text-align: center;
+  padding: 11px 8px;
+  border-radius: 30px;
+  background: linear-gradient(180deg, #fff, #f9d8e8);
+  border: 2px solid #ffffff;
+  box-shadow: 0 5px 9px #bd819a44;
+  font-size: 20px;
+  font-weight: 900;
+  color: #b96f91;
+}
+
+.recent-content {
+  min-height: 155px;
+  margin-top: -8px;
+  border-radius: 32px;
+  border: 2px solid #ffffff;
+  background: linear-gradient(145deg, #fffdfd, #fff0f5);
+  box-shadow:
+    0 7px 12px #c68da044,
+    inset 0 4px 8px #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 25px 15px;
+  text-align: center;
+}
+
+.empty-message {
+  font-size: 18px;
+  font-weight: bold;
+  color: #c17e9d;
+}
+
+/* 下部ナビ */
+
+.bottom-nav {
+  position: fixed;
+  z-index: 10;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  max-width: 520px;
+  margin: auto;
+  height: 92px;
+  border-radius: 32px;
+  border: 2px solid #ffffff;
+  background: linear-gradient(145deg, #fff9fc, #f7d4e7);
+  box-shadow:
+    0 7px 16px #b97b9c55,
+    inset 0 4px 8px #ffffff;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.nav-button {
+  border: none;
+  background: transparent;
+  color: #b96d91;
+  font-family: inherit;
+  font-weight: bold;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+}
+
+.nav-button + .nav-button {
+  border-left: 2px solid #edc1d7;
+}
+
+.nav-icon {
+  font-size: 31px;
+  filter: drop-shadow(0 3px 3px #ba779644);
 }
 
 footer {
   text-align: center;
-  color: #c5a4b2;
   font-size: 11px;
-  margin-top: 28px;
+  color: #c79bad;
+  margin: 20px 0;
+}
+
+@media (max-width: 360px) {
+  body {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .menu-grid {
+    gap: 8px;
+  }
+
+  .menu-button {
+    min-height: 125px;
+    font-size: 12px;
+  }
+
+  .menu-icon {
+    font-size: 39px;
+  }
+
+  .stat-icon {
+    font-size: 32px;
+  }
 }
 </style>
 </head>
 
 <body>
+
 <div class="container">
 
-<header>
-  <h1>🎀 メンバー募集管理 ♡</h1>
-  <p>声をかけたメンバーをかわいく管理</p>
-</header>
+  <div class="cloud-frill"></div>
 
-<div class="card">
-  <h2>💗 メンバー状況</h2>
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-label">登録人数</div>
-      <div class="stat-number" id="totalCount">0 人</div>
+  <div class="decoration ribbon">🎀</div>
+  <div class="decoration heart-one">💛</div>
+  <div class="decoration heart-two">💗</div>
+  <div class="decoration heart-three">💗</div>
+
+  <header>
+    <div class="crown">👑</div>
+    <h1>Member Room</h1>
+    <div class="subtitle">💗 メンバー募集管理 💗</div>
+  </header>
+
+  <!-- 人数表示 -->
+
+  <section class="stats">
+
+    <div class="stat green">
+      <div class="stat-icon">👥</div>
+      <div class="stat-info">
+        <div class="stat-number" id="totalCount">0</div>
+        <div class="stat-label">登録人数</div>
+      </div>
     </div>
-    <div class="stat">
-      <div class="stat-label">検討中・返事待ち</div>
-      <div class="stat-number" id="pendingCount">0 人</div>
+
+    <div class="stat pink">
+      <div class="stat-icon">💭</div>
+      <div class="stat-info">
+        <div class="stat-number" id="pendingCount">0</div>
+        <div class="stat-label">検討中</div>
+      </div>
     </div>
-  </div>
+
+  </section>
+
+  <!-- 6つのメニュー -->
+
+  <h2 class="section-title">♡ MENU ♡</h2>
+
+  <section class="menu-grid">
+
+    <button class="menu-button menu-pink" type="button">
+      <span class="menu-icon">📝</span>
+      <span>検索</span>
+    </button>
+
+    <button class="menu-button menu-green" type="button">
+      <span class="menu-icon">📅</span>
+      <span>新規登録</span>
+    </button>
+
+    <button class="menu-button menu-yellow" type="button">
+      <span class="menu-icon">🔍</span>
+      <span>編集</span>
+    </button>
+
+    <button class="menu-button menu-blue" type="button">
+      <span class="menu-icon">💗</span>
+      <span>参加状況</span>
+    </button>
+
+    <button class="menu-button menu-purple" type="button">
+      <span class="menu-icon">🔗</span>
+      <span>リンク対応</span>
+    </button>
+
+    <button class="menu-button menu-orange" type="button">
+      <span class="menu-icon">📒</span>
+      <span>ちびメモ</span>
+    </button>
+
+  </section>
+
+  <!-- 最近の登録 -->
+
+  <section class="recent">
+
+    <div class="recent-title">
+      💗 最近の登録 💗
+    </div>
+
+    <div class="recent-content">
+      <div class="empty-message">
+        まだ登録されていません ♡
+      </div>
+    </div>
+
+  </section>
+
+  <footer>
+    Member Room ♡
+  </footer>
+
 </div>
 
-<div class="card">
-  <h2>🌷 メニュー</h2>
+<!-- 下部ナビゲーション -->
 
-  <button class="menu-button primary">
-    ＋ 新しい人を登録する
+<nav class="bottom-nav">
+
+  <button class="nav-button" type="button">
+    <span class="nav-icon">🏠</span>
+    <span>ホーム</span>
   </button>
 
-  <button class="menu-button">
-    ♡ 登録メンバー一覧
+  <button class="nav-button" type="button">
+    <span class="nav-icon">☷</span>
+    <span>一覧</span>
   </button>
 
-  <button class="menu-button">
-    🔍 メンバーを検索する
+  <button class="nav-button" type="button">
+    <span class="nav-icon">📋</span>
+    <span>出力</span>
   </button>
 
-  <button class="menu-button">
-    📋 データを出力する
-  </button>
-</div>
+</nav>
 
-<footer>
-  Member Recruit Manager ♡
-</footer>
-
-</div>
 </body>
 </html>
