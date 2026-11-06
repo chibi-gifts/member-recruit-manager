@@ -568,6 +568,31 @@ footer {
   font-weight: bold;
   box-shadow: 0 4px 9px #e9b9cd;
 }
+/* 確認画面の入力内容カード */
+.confirm-item {
+  background: #fff9fc;
+  border: 2px solid #f7d5e4;
+  border-radius: 17px;
+  padding: 13px 15px;
+  margin: 10px 0;
+  box-shadow: 0 3px 7px #f3dce7;
+}
+
+.confirm-item strong {
+  display: block;
+  color: #b96f91;
+  font-size: 13px;
+  margin-bottom: 7px;
+}
+
+.confirm-item p {
+  color: #775568 !important;
+  text-align: left !important;
+  font-size: 15px !important;
+  margin: 0 !important;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 /* 確認画面へ進むボタン */
 #goConfirmButton {
   display: block;
@@ -897,6 +922,71 @@ function showConfirmContent() {
 
     confirmContent.appendChild(item);
   });
+// 確認画面へ進むボタン
+const goConfirmButton = document.getElementById('goConfirmButton');
+
+goConfirmButton.addEventListener('click', () => {
+
+  // 必須項目の確認
+  if (!registerInputs.contactDate.value) {
+    alert('声かけ日を入力してください♡');
+    registerInputs.contactDate.focus();
+    return;
+  }
+
+  if (!registerInputs.memberName.value.trim()) {
+    alert('お名前を入力してください♡');
+    registerInputs.memberName.focus();
+    return;
+  }
+
+  // 垢数の確認
+  if (
+    registerInputs.accountCount.value !== '' &&
+    (
+      !Number.isInteger(Number(registerInputs.accountCount.value)) ||
+      Number(registerInputs.accountCount.value) < 0
+    )
+  ) {
+    alert('持ち垢数は0以上の整数で入力してください♡');
+    registerInputs.accountCount.focus();
+    return;
+  }
+
+  if (
+    registerInputs.linkAccountCount.value !== '' &&
+    (
+      !Number.isInteger(Number(registerInputs.linkAccountCount.value)) ||
+      registerInputs.accountCount.value === '' ||
+      Number(registerInputs.linkAccountCount.value) >
+      Number(registerInputs.accountCount.value) ||
+      Number(registerInputs.linkAccountCount.value) < 0
+    )
+  ) {
+    alert('リンク対応垢数を確認してください♡');
+    registerInputs.linkAccountCount.focus();
+    return;
+  }
+
+  // 確認画面を表示
+  showConfirmContent();
+  homeScreen.style.display = 'none';
+  registerScreen.style.display = 'none';
+  confirmScreen.style.display = 'block';
+  window.scrollTo(0, 0);
+});
+// 確認画面から入力画面に戻る
+function backToRegister() {
+  confirmScreen.style.display = 'none';
+  registerScreen.style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+// 修正するボタン
+editRegisterButton.addEventListener('click', backToRegister);
+
+// 入力画面に戻るボタン
+backRegisterButton.addEventListener('click', backToRegister);
 }
 // 声かけ日を最終連絡日に自動入力
 const contactDate = document.getElementById('contactDate');
