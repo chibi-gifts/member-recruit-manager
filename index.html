@@ -1006,7 +1006,14 @@ footer {
 import { initializeApp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
-import { doc, getDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
+import {
+  doc,
+  getDoc,
+  collection,
+  addDoc,
+  getDocs,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js";
 import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
@@ -1029,6 +1036,64 @@ const app = initializeApp(firebaseConfig);
 // 認証とデータベースを準備
 const auth = getAuth(app);
 const db = getFirestore(app);
+// Firestoreからメンバー情報を読み込んでホーム画面に表示
+async function loadHomeData() {
+  try {
+    const snapshot = await getDocs(collection(db, 'members'));
+
+    const members = snapshot.docs.map(memberDoc => ({
+      id: memberDoc.id,
+      ...memberDoc.data()
+    }));
+
+    // 登録人数
+    document.getElementById('totalCount').textContent = members.length;
+
+    // 検討中の人数
+    const pendingMembers = members.filter(member =>
+      member.participationStatus === '検討中'
+    );
+
+    document.getElementById('pendingCount').textContent = pendingMembers.length;
+
+    // 最近の登録
+    const recentContent = document.querySelector('.recent-content');
+    recentContent.replaceChildren();
+    recentContent.style.display = 'block';
+    recentContent.style.textAlign = 'left';
+
+    members.sort((a, b) => {
+      const aTime = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : 0;
+      const bTime = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : 0;
+      return bTime - aTime;
+    });
+
+    const recentMembers = members.slice(0, 3);
+
+    if (recentMembers.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'empty-message';
+      empty.textContent = 'まだ登録されていません ♡';
+      recentContent.appendChild(empty);
+    } else {
+      recentMembers.forEach((member, index) => {
+        const item = document.createElement('div');
+        item.style.padding = '8px 4px';
+        item.style.borderBottom = index === recentMembers.length - 1
+          ? 'none'
+          : '1px solid #f4d5e2';
+        item.style.color = '#a85e83';
+        item.style.fontWeight = 'bold';
+        item.textContent = `${member.memberName || '名前未設定'}　${member.contactDate || ''}`;
+        recentContent.appendChild(item);
+      });
+    }
+
+  } catch (error) {
+    console.error(error);
+    alert('メンバー情報を読み込めませんでした。');
+  }
+}
 // ログイン画面・アプリ画面の切り替え
 const loginScreen = document.getElementById('loginScreen');
 const homeScreen = document.getElementById('homeScreen');
@@ -1082,8 +1147,9 @@ onAuthStateChanged(auth, async (user) => {
       return;
     }
 
-    console.log('ログイン成功・ホーム画面表示');
-    showAppScreen();
+  console.log('ログイン成功・ホーム画面表示');
+showAppScreen();
+await loadHomeData();
 
   } catch (error) {
     console.error(error);
@@ -1335,7 +1401,9 @@ submitRegisterButton.addEventListener('click', async () => {
 
     await addDoc(collection(db, 'members'), memberData);
 
-    alert('💗 メンバーを登録しました！');
+await loadHomeData();
+
+alert('💗 メンバーを登録しました！');
 
     Object.values(registerInputs).forEach(input => {
       input.value = '';
