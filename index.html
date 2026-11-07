@@ -1307,6 +1307,56 @@ backHomeButton.addEventListener('click', () => {
   bottomNav.style.display = 'grid';
   window.scrollTo(0, 0);
 });
+// 登録確定・Firestoreに保存
+submitRegisterButton.addEventListener('click', async () => {
+
+  submitRegisterButton.disabled = true;
+  submitRegisterButton.textContent = '保存中…♡';
+
+  try {
+    const memberData = {
+      contactDate: registerInputs.contactDate.value,
+      xAccount: registerInputs.xAccount.value.trim(),
+      memberName: registerInputs.memberName.value.trim(),
+      activityStatus: registerInputs.activityStatus.value,
+      accountCount: registerInputs.accountCount.value === ''
+        ? null
+        : Number(registerInputs.accountCount.value),
+      linkAccountCount: registerInputs.linkAccountCount.value === ''
+        ? null
+        : Number(registerInputs.linkAccountCount.value),
+      participationStatus: registerInputs.participationStatus.value,
+      lastContactDate: registerInputs.lastContactDate.value,
+      nextContactDate: registerInputs.nextContactDate.value,
+      memberMemo: registerInputs.memberMemo.value.trim(),
+      createdAt: serverTimestamp(),
+      createdBy: auth.currentUser.uid
+    };
+
+    await addDoc(collection(db, 'members'), memberData);
+
+    alert('💗 メンバーを登録しました！');
+
+    Object.values(registerInputs).forEach(input => {
+      input.value = '';
+    });
+
+    confirmScreen.style.display = 'none';
+    registerScreen.style.display = 'none';
+    homeScreen.style.display = 'block';
+    bottomNav.style.display = 'grid';
+
+    window.scrollTo(0, 0);
+
+  } catch (error) {
+    console.error(error);
+    alert('登録できませんでした。もう一度お試しください。');
+
+  } finally {
+    submitRegisterButton.disabled = false;
+    submitRegisterButton.textContent = '💗 この内容で登録する';
+  }
+});
 </script>
 </body>
 </html>
